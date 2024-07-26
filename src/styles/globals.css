@@ -312,7 +312,7 @@ body::-webkit-scrollbar {
   position: fixed;
   top: 0px;
   right: 0px;
-  background: #e54e40 url(../assets/svgs/logo.svg) no-repeat center center;
+  background: #e54e40 url(/assets/svgs/logo.svg) no-repeat center center;
   background-size: 50px;
   color: #ffffff;
   height: 70px;
@@ -327,7 +327,7 @@ body::-webkit-scrollbar {
   right: 70px;
   left: 505px;
   bottom: 70px;
-  background: url(../assets/imgs/splash_1.jpg) no-repeat center center;
+  background: url(/assets/imgs/splash_1.jpg) no-repeat center center;
   background-size: cover;
 }
 
