@@ -1,42 +1,45 @@
 @font-face {
   font-family: "Metropolis Black";
-  src: url("/metropolis-black-webfont.woff2") format("woff2"),
-    url("/metropolis-black-webfont.woff") format("woff");
+  src: url("/fonts/metropolis/metropolis-black-webfont.woff2") format("woff2"),
+    url("") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Metropolis Light";
-  src: url("/metropolis-light-webfont.woff2") format("woff2"),
-    url("/metropolis-light-webfont.woff") format("woff");
+  src: url("/fonts/metropolis/metropolis-light-webfont.woff2") format("woff2"),
+    url("/fonts/metropolis/metropolis-light-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Metropolis Medium";
-  src: url("/metropolis-medium-webfont.woff2") format("woff2"),
-    url("/metropolis-medium-webfont.woff") format("woff");
+  src: url("/fonts/metropolis/metropolis-medium-webfont.woff2") format("woff2"),
+    url("/fonts/metropolis/metropolis-medium-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Metropolis Regular";
-  src: url("/metropolis-regular-webfont.woff2") format("woff2"),
-    url("/metropolis-regular-webfont.woff") format("woff");
+  src: url("/fonts/metropolis/metropolis-regular-webfont.woff2") format("woff2"),
+    url("/fonts/metropolis/metropolis-regular-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Metropolis Semibold";
-  src: url("/metropolis-semibold-webfont.woff2") format("woff2"),
-    url("/metropolis-semibold-webfont.woff") format("woff");
+  src: url("/fonts/metropolis/metropolis-semibold-webfont.woff2")
+      format("woff2"),
+    url("/fonts/metropolis/metropolis-semibold-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
+
+/* COLOR PALETTE #e7ecef, #274c77, #e54e40, #6096ba, #a3cef1 */
 
 * {
   box-sizing: border-box;
@@ -48,6 +51,7 @@ html,
 body {
   overflow-x: hidden;
   line-height: 1.3; /* Overide normalize */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -68,7 +72,7 @@ a {
 /* ------------------------- */
 
 .section {
-  min-height: 100vh;
+  height: 100vh;
   padding: 70px;
   position: relative;
   width: 100%;
@@ -81,6 +85,7 @@ body::-webkit-scrollbar {
 .sidebar .scene {
   width: 35%;
   height: 60px;
+  transform: translateY(-5px);
 }
 
 .carousel {
@@ -107,6 +112,7 @@ body::-webkit-scrollbar {
   opacity: 0;
   line-height: 80px;
   font-size: 45px;
+  font-family: "Metropolis Semibold", sans-serif;
   color: #e54e40;
   text-align: left;
   transition: opacity 1s;
@@ -119,29 +125,16 @@ body::-webkit-scrollbar {
 }
 
 .carousel-cell:nth-child(1) {
-  background: hsla(0, 0%, 100%, 1);
+  transform: rotateX(0deg) translateZ(40px);
 }
 .carousel-cell:nth-child(2) {
-  background: hsla(0, 0%, 100%, 1);
+  transform: rotateX(90deg) translateZ(40px);
 }
 .carousel-cell:nth-child(3) {
-  background: hsla(0, 0%, 100%, 1);
+  transform: rotateX(180deg) translateZ(40px);
 }
 .carousel-cell:nth-child(4) {
-  background: hsla(0, 0%, 100%, 1);
-}
-
-.carousel-cell:nth-child(1) {
-  transform: rotateX(0deg) translateZ(38px);
-}
-.carousel-cell:nth-child(2) {
-  transform: rotateX(90deg) translateZ(38px);
-}
-.carousel-cell:nth-child(3) {
-  transform: rotateX(180deg) translateZ(38px);
-}
-.carousel-cell:nth-child(4) {
-  transform: rotateX(270deg) translateZ(38px);
+  transform: rotateX(270deg) translateZ(40px);
 }
 
 .carousel-options {
@@ -151,21 +144,34 @@ body::-webkit-scrollbar {
   background: hsla(0, 0%, 100%, 0.8);
 }
 
-.sidebar {
+.home-wrapper {
   position: fixed;
-  background: #ffffff;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 3;
+  transition: transform 0.5s;
+  transform: translateX(0px);
+  pointer-events: none;
+}
+
+.sidebar {
+  position: relative;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0.8)
+  );
   bottom: 0;
   left: 0;
   top: 0;
-  min-width: 505px;
+  width: 33vw;
+  min-width: 525px;
   box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.075);
-  z-index: 2;
-  transform: translateX(0);
+  z-index: 4;
   transition: transform 0.5s;
-}
-
-.collapsed .sidebar {
-  transform: translateX(-435px);
 }
 
 .sidebar .top {
@@ -177,6 +183,14 @@ body::-webkit-scrollbar {
   position: absolute;
   right: 70px;
   top: 0;
+  opacity: 1;
+  transition: opacity 0.5s;
+  transition-delay: 150ms;
+}
+
+.collapsed .sidebar .top {
+  opacity: 0;
+  transition-delay: 0ms;
 }
 
 .sidebar .title {
@@ -201,10 +215,20 @@ body::-webkit-scrollbar {
   padding-top: 60px;
 }
 
+.story {
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px;
+  position: relative;
+  width: 100%;
+  color: #4d4d4f;
+  font-size: 14px;
+}
+
 .portfolio-button-wrapper {
   bottom: 70px;
-  left: 0;
-  position: absolute;
+  left: 70px;
+  position: fixed;
   display: flex;
   justify-content: flex-start;
   z-index: 3;
@@ -218,8 +242,8 @@ body::-webkit-scrollbar {
 
 .portfolio-button {
   align-items: center;
-  background-color: #ffffff;
-  color: #e54e40;
+  color: #ffffff;
+  background-color: #e54e40;
   border: 3px solid #e54e40;
   padding: 2px 10px;
   display: flex;
@@ -261,9 +285,14 @@ body::-webkit-scrollbar {
   min-width: 6px;
 }
 
+.portfolio-button .button-graphic g#website_1 {
+  fill: #ffffff;
+}
+
 .navbar {
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.075);
+  pointer-events: all;
   color: #505050;
   display: flex;
   flex-direction: column;
@@ -271,22 +300,30 @@ body::-webkit-scrollbar {
   height: 70px;
   justify-content: center;
   left: 0;
-  padding-left: 505px;
-  position: fixed;
-  right: -505px;
+  position: absolute;
+  width: 100vw;
   top: 0;
-  transform: translateX(0);
-  transition: transform 0.5s;
-  z-index: 1;
+  z-index: 3;
 }
 
 .links {
+  position: relative;
+  transform: translateX(0);
+  transition: transform 0.5s;
+  transition-delay: 25ms;
   align-items: center;
   display: flex;
 }
 
-.collapsed .navbar {
-  transform: translateX(-435px);
+.links-spacer {
+  transition: width 0.5s;
+}
+
+.links a {
+  white-space: nowrap;
+}
+
+.collapsed .navbar .links {
 }
 
 .link {
@@ -295,6 +332,7 @@ body::-webkit-scrollbar {
   transition: color 200ms;
   cursor: pointer;
   user-select: none;
+  word-break: keep-all;
 }
 
 .link:hover {
@@ -311,24 +349,64 @@ body::-webkit-scrollbar {
 .logo {
   position: fixed;
   top: 0px;
-  right: 0px;
+  left: 0px;
   background: #e54e40 url(/assets/svgs/logo.svg) no-repeat center center;
   background-size: 50px;
   color: #ffffff;
   height: 70px;
   width: 70px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
-  z-index: 4;
+  z-index: 5;
 }
 
-.section.top .splash {
+.darkmode-toggle {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  background: url(/assets/svgs/darkmode.svg) no-repeat center center;
+  background-size: 20px;
+  opacity: 1;
+  transition: all 0.2s;
+  height: 70px;
+  width: 70px;
+  z-index: 4;
+  transition-delay: 250ms;
+  cursor: pointer;
+}
+
+.collapsed .darkmode-toggle {
+  transition-delay: 0ms;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.section.top .splash-container {
   position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
   top: 0;
   right: 70px;
-  left: 505px;
+  left: 70px;
   bottom: 70px;
-  background: url(/assets/imgs/splash_1.jpg) no-repeat center center;
-  background-size: cover;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.section.top .splash-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  grid-column-start: 2;
+}
+
+.section.top .splash-container img {
+  position: absolute;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  justify-self: center;
 }
 
 .section.top .header {
@@ -342,41 +420,65 @@ body::-webkit-scrollbar {
   transform: translateY(-50%);
 }
 
-.collapsed .portfolio-button {
-  transform: translateX(-435px);
+.scroll-button {
+  position: fixed;
+  width: 70px;
+  height: 100vh;
+  right: 0;
+  z-index: 5;
 }
 
-.scrollButton .down {
-  position: fixed;
+.scroll-button .scroll-up:hover,
+.scroll-button .scroll-down:hover {
+  background: #e54e40;
+  animation: none;
+}
+.scroll-up:hover svg path,
+.scroll-down:hover svg path {
+  fill: #ffffff;
 }
 
 .scroll-button .scroll-up {
   position: fixed;
-  width: 17.5px;
-  left: calc(35px - 8.75px);
-  top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  right: 0;
+  top: 0;
   z-index: 3;
   animation: bounce 2s infinite;
   opacity: 0;
-  transition: opacity 0.2s;
-  transition-delay: 0.5s;
+  transition: all 0.2s;
   cursor: pointer;
-  user-select: none;
+  transition-delay: 50ms;
+  pointer-events: none;
 }
 
 .collapsed .scroll-up {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .scroll-button .scroll-down {
   position: fixed;
-  width: 17.5px;
-  left: calc(35px - 8.75px);
-  bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  right: 0;
+  bottom: 0px;
   z-index: 3;
   animation: bounce-2 2s infinite;
+  transition: all 0.2s;
   cursor: pointer;
   user-select: none;
+}
+
+.scroll-button svg {
+  width: 17.5px;
 }
 
 .portfolio-button:hover .button-graphic,
@@ -395,22 +497,6 @@ body::-webkit-scrollbar {
   border-top: 3px solid #e54e40;
   opacity: 1;
   transition: opacity 250ms;
-}
-
-.enter-section-1 .link-underscore {
-  margin-left: 35px;
-}
-
-.enter-section-2 .link-underscore {
-  margin-left: calc(35px + 77.59px);
-}
-
-.enter-section-5 .link-underscore {
-  margin-left: calc(35px + 77.59px + 105.84px);
-}
-
-.enter-section-6 .link-underscore {
-  margin-left: calc(35px + 77.59px + 105.84px + 117.61px);
 }
 
 .scroll-indicator {
@@ -494,8 +580,228 @@ body::-webkit-scrollbar {
   transition: fill 0.2s;
 }
 
-.section.about-me {
+.section.portfolio {
   box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.075);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-right: 0;
+}
+
+.section.portfolio .project-header {
+  position: absolute;
+  height: 100%;
+  width: calc(33vw - 140px);
+  min-width: 455px;
+  padding: 0 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, .9),
+    rgba(255, 255, 255, .75)
+  );
+  backdrop-filter: blur(10px);
+  z-index: 2;
+}
+
+.section.portfolio .project-header .title {
+  font-family: "Metropolis Regular";
+  font-size: 45px;
+  color: #505050;
+  padding-right: 15px;
+}
+
+.section.portfolio .project-header .content {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.section.portfolio .filter-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  align-items: center;
+  margin-top: 35px;
+  position: relative;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 385px;
+  height: 35px;
+  background-color: #0000000d;
+  border-radius: 17.5px;
+  overflow: hidden;
+}
+.section.portfolio .filter-cancel {
+  position: absolute;
+  opacity: 0;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  left: -32px;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.section.portfolio .filter-cancel svg {
+  width: 10px;
+  height: 10px;
+  fill: #e54e40;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.section.portfolio .filter-highlight.enabled {
+  opacity: 1;
+}
+.section.portfolio .filter-highlight {
+  position: absolute;
+  height: 100%;
+  width: 25%;
+  background-color: #e54e40;
+  z-index: -1;
+  border-radius: 17.5px;
+  transform: translateX(-100%);
+  transition: all 0.35s ease-in-out;
+  opacity: 0;
+}
+
+.section.portfolio .filter {
+  font-family: "Metropolis Regular";
+  color: #a0a0a0;
+  font-size: 0.8em;
+  padding: 12px 0;
+  min-width: 50px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.35s;
+}
+
+.section.portfolio .filter.current {
+  color: #ffffff;
+  mix-blend-mode: normal;
+}
+
+.section.portfolio .projects-grid-wrapper {
+  overflow-x: scroll;
+  position: relative;
+  display: block;
+  width: auto;
+  height: 100vh;
+  right: 0;
+}
+
+.section.portfolio .projects-grid {
+  display: grid;
+  position: relative;
+  grid-template-columns: auto repeat(6, calc(((100vh - 140px) / 3) * 2));
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  grid-template-areas:
+    "placeholder project-1 project-3 project-5 project-7 project-9 project-11"
+    "placeholder project-2 project-3 project-6 project-7 project-10 project-11"
+    "placeholder project-2 project-4 project-6 project-8 project-10 project-12";
+  justify-content: start;
+  width: auto;
+  padding: 70px 0 70px 0;
+  height: 100vh;
+}
+
+.section.portfolio .projects-grid .project-label {
+  position: absolute;
+  font-family: "Metropolis Regular";
+  color: #505050;
+  font-size: 15px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.section.portfolio .projects-grid .grid-placeholder {
+  width: calc(33vw - 140px);
+  min-width: 455px;
+  grid-area: placeholder;
+}
+
+.section.portfolio .projects-grid .project-tile-wrapper {
+  background-image: url(/assets/imgs/project1-preview.jpg);
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-self: stretch;
+  overflow: hidden;
+  cursor: pointer;
+  transform: scale3d(1, 1, 1);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.section.portfolio .projects-grid .project-tile-wrapper:hover {
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.3);
+  transform: scale3d(1.02, 1.02, 1.02);
+}
+
+.section.portfolio .scroll-block {
+  position: absolute;
+  width: 70px;
+  height: 100%;
+  right: 0;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.5)
+  );
+  z-index: 1;
+}
+
+.section.portfolio .projects-grid .project-image-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: auto;
+  height: 100%;
+}
+
+.section.portfolio .projects-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  cursor: pointer;
+}
+
+.projects-container .project-tile-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.project-modal {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.section.about-me {
   display: flex;
   max-height: 100vh;
 }
@@ -530,7 +836,7 @@ body::-webkit-scrollbar {
 }
 
 .section.about-me .title .header {
-  font-family: 'Metropolis Regular';
+  font-family: "Metropolis Regular";
   font-size: 37px;
   color: #505050;
 }
@@ -569,7 +875,7 @@ body::-webkit-scrollbar {
 
 .section.about-me .half .graphic {
   background: no-repeat center center;
-  background-size: contain; 
+  background-size: contain;
   flex: 1;
 }
 
@@ -590,7 +896,7 @@ body::-webkit-scrollbar {
 }
 
 .section.about-me .half .caption {
-  font-family: 'Metropolis Light';
+  font-family: "Metropolis Light";
   font-size: 15px;
   padding: 30px 30px;
   color: #505050;
@@ -599,122 +905,4 @@ body::-webkit-scrollbar {
 
 .section.about-me .half .caption::-webkit-scrollbar {
   display: hidden;
-}
-
-
-.section.portfolio {
-  height: 100vh;
-  display: flex;
-}
-
-.section.portfolio .body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 400px;
-}
-
-.section.portfolio .title {
-  display: flex;
-  flex-direction: column;
-  padding-left: 70px;
-}
-
-.section.portfolio .title .header {
-  display: flex;
-  font-family: "Metropolis Regular";
-  font-size: 37px;
-  color: #505050;
-}
-
-.section.portfolio .title .underscore {
-  border-top: 4px solid #e54e40;
-  margin-top: 40px;
-  max-width: 100px;
-  min-width: 100px;
-}
-
-.section.portfolio .tile-label-container {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  width: 400px;
-  height: 140px;
-  bottom: 70px;
-  padding: 0 0 0 70px;
-  user-select: none;
-}
-
-.section.portfolio .tile-label {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  font-family: "Metropolis Semibold";
-}
-
-.section.portfolio .tile-label .label {
-  position: absolute;
-  font-family: "Metropolis Regular";
-  color: #505050;
-  font-size: 15px;
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.section.portfolio .tile-label .caption {
-  position: absolute;
-  line-height: 35px;
-  font-family: "Metropolis Semibold";
-  color: #e54e40;
-  font-size: 120px;
-  opacity: 0;
-  transform: translateX(400px);
-  transition: all 0.25s;
-}
-
-.hovered .section.portfolio .tile-label.one .caption {
-  transform: translateX(0);
-  opacity: 0.1;
-}
-
-.section.portfolio .tiles-container {
-  display: flex;
-  flex-direction: row;
-  background: #000;
-  top: 70px;
-  right: 70px;
-  width: 100%;
-  height: calc(100vh - 140px);
-  overflow: hidden;
-}
-
-.tiles-container .project-tile {
-  width: 25%;
-  background: no-repeat center center;
-  display: flex;
-  cursor: pointer;
-  user-select: none;
-  min-width: 140px;
-  transition: opacity 250ms;
-}
-
-.project-tile:hover {
-  opacity: 0.5;
-}
-
-.project-tile.first {
-  background-image: url(/322466-bullet-train-wallpaper.jpg);
-}
-
-.project-tile.second {
-  background-image: url(/322466-bullet-train-wallpaper.jpg);
-}
-
-.project-tile.third {
-  background-image: url(/322466-bullet-train-wallpaper.jpg);
-}
-
-.project-tile.fourth {
-  background-image: url(/322466-bullet-train-wallpaper.jpg);
 }

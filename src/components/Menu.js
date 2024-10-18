@@ -1,27 +1,52 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
+import React, { useRef } from "react";
+import { useState, useEffect } from "react";
 import NavbarLink from "./navbarLink";
 
-function Menu({ currentSection, setCurrentSection, currentMedia }) {
+function Menu({
+  currentSection,
+  setCurrentSection,
+  scrollYPosition,
+  currentMedia,
+  mySidebar,
+}) {
   const [isOpen, setIsOPen] = useState(false);
   const linksClass = isOpen ? "links open" : "links";
+  const navLinks = useRef();
 
-  const sectionNames = ["Home", "About Me", "Projects", "Latest Work"];
-  const links = sectionNames.map((obj) => {
-    return <NavbarLink key={obj} section={obj} />;
+  useEffect(() => {
+    const sidebarWidth = mySidebar.current.offsetWidth;
+    if (scrollYPosition > window.innerHeight * 0.5) {
+      navLinks.current.style.transform = `translateX(70px)`;
+    } else {
+      navLinks.current.style.transform = `translateX(${sidebarWidth}px)`;
+    }
+  }, [mySidebar, scrollYPosition]);
+
+  const sections = [
+    { id: 0, hash: "", text: "Home" },
+    { id: 1, hash: "projects", text: "Projects" },
+    { id: 2, hash: "about", text: "About Me" },
+    { id: 3, hash: "latest-work", text: "Latest Work" },
+  ];
+  const links = sections.map((obj) => {
+    return <NavbarLink key={obj.id} section={obj} />;
   });
   return (
-    <div>
-      {currentMedia === "mobile" ? (
-        <div className="hamburger-container">
-          <div className="hamburger" onClick={menuToggle}></div>
-          <div className={linksClass}>{links}</div>
-        </div>
-      ) : (
-        <div className="links">{links}</div>
-      )}
+    <div className="navbar">
+      <div className="linksContainer">
+        {currentMedia === "mobile" ? (
+          <div className="hamburger-container">
+            <div className="hamburger" onClick={menuToggle}></div>
+            <div className={linksClass}>{links}</div>
+          </div>
+        ) : (
+          <div ref={navLinks} className="links">
+            {links}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

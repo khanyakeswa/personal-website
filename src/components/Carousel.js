@@ -23,7 +23,7 @@ function Carousel({ carouselAngle, setCarouselAngle }) {
   useEffect(() => {
     const interval = setInterval(() => {
       carouselScroll();
-      setCarouselAngle(carouselAngle + 90);
+      setCarouselAngle(carouselAngle - 90);
     }, 2000);
     return () => clearInterval(interval);
   });
@@ -41,7 +41,7 @@ function Carousel({ carouselAngle, setCarouselAngle }) {
   let cellIndex = 0
   const cells = cellText.map((obj) => {
     cellIndex++;
-    return <CarouselCell key={obj} text={obj} currentIndex={currentIndex} cellIndex={cellIndex}/>;
+    return <CarouselCell key={obj.id} text={obj} currentIndex={currentIndex} cellIndex={cellIndex}/>;
   });
 
   //   function rotateCarousel() {
