@@ -6,6 +6,9 @@ const ProjectFilterCategory = ({
   text,
   currentFilter,
   setCurrentFilter,
+  setProjects,
+  renderedProjects,
+  projectData
 }) => {
   const myRef = useRef(null);
 
@@ -13,7 +16,11 @@ const ProjectFilterCategory = ({
     if (myRef && myRef.current) {
       myRef.current.addEventListener("click", () => {
         setCurrentFilter(category);
-        console.log(category)
+        setProjects(projectData.filter((p) => {
+          return (
+            p.type.includes(category)
+          )
+        }))
       });
     }
   }, [myRef]);

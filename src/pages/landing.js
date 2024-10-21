@@ -7,8 +7,9 @@ function Landing({ scrollYPosition }) {
     <div id="landing" className="section top">
       <div className="splash-container">
         <div className="splash-wrapper">
+          {/* <video preload="" tabindex="-1" loop="" style="" src="blob:https://vimeo.com/4e0e4578-8621-4f60-9207-f941cb2ed3f9"></video> */}
           <Image
-            src="/assets/imgs/splash_1.jpg"
+            src="/assets/imgs/splash_2.jpg"
             alt="splash"
             width={1920}
             height={1080}

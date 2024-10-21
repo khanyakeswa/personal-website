@@ -25,10 +25,10 @@ function Menu({
   }, [mySidebar, scrollYPosition]);
 
   const sections = [
-    { id: 0, hash: "", text: "Home" },
+    { id: 0, hash: "landing", text: "Home" },
     { id: 1, hash: "projects", text: "Projects" },
-    { id: 2, hash: "about", text: "About Me" },
-    { id: 3, hash: "latest-work", text: "Latest Work" },
+    // { id: 2, hash: "about", text: "About" },
+    // { id: 3, hash: "latest-work", text: "Latest Work" },
   ];
   const links = sections.map((obj) => {
     return <NavbarLink key={obj.id} section={obj} />;

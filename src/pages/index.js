@@ -19,18 +19,20 @@ export default function Home() {
   const [currentSection, setCurrentSection] = useState("");
   const [currentMedia, setCurrentMedia] = useState("desktop");
   const [darkmode, setDarkmode] = useState(false);
+  const [projectView, setProjectView] = useState(false)
   const [scrollYPosition, setScrollYPosition] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
   const mySidebar = useRef();
+  const myMain = useRef(null);
 
   const handleScroll = () => {
-    const newScrollYPosition = window.scrollY;
+    const newScrollYPosition = myMain.current.scrollTop;
     const sections = document.querySelectorAll(".section");
     const sectionsArray = Array.from(sections);
     const currentSection = sectionsArray.find((section) => {
       const sectionTop = section.offsetTop;
       const sectionBottom = sectionTop + section.offsetHeight;
-      return window.scrollY >= sectionTop && window.scrollY < sectionBottom;
+      return myMain.current.scrollTop >= sectionTop && myMain.current.scrollTop < sectionBottom;
     });
     setScrollYPosition(newScrollYPosition);
     if (currentSection) {
@@ -39,10 +41,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    myMain.current.addEventListener("scroll", handleScroll);
     setWindowHeight(window.innerHeight * 0.5);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      myMain.current.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -68,7 +70,7 @@ export default function Home() {
         <meta name="apple-mobile-web-app-title" content="Khanya.dev" />
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
-      <main className={scrollYPosition > windowHeight ? "collapsed" : null}>
+      <main ref={myMain} className={scrollYPosition > windowHeight ? "collapsed" : null}>
         <div className="logo"></div>
         <div
           className="darkmode-toggle"
@@ -161,9 +163,11 @@ export default function Home() {
           scrollYPosition={scrollYPosition}
           windowHeight={windowHeight}
           currentSection={currentSection}
+          projectView={projectView}
+          setProjectView={setProjectView}
         />
-        <AboutMe />
-        <LatestWork />
+        {/* <AboutMe />
+        <LatestWork /> */}
       </main>
     </>
   );

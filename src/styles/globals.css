@@ -71,11 +71,19 @@ a {
 
 /* ------------------------- */
 
+main {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
 .section {
   height: 100vh;
   padding: 70px;
   position: relative;
   width: 100%;
+  scroll-snap-align: start;
 }
 
 body::-webkit-scrollbar {
@@ -356,7 +364,7 @@ body::-webkit-scrollbar {
   height: 70px;
   width: 70px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
-  z-index: 5;
+  z-index: 6;
 }
 
 .darkmode-toggle {
@@ -448,7 +456,7 @@ body::-webkit-scrollbar {
   right: 0;
   top: 0;
   z-index: 3;
-  animation: bounce 2s infinite;
+  animation: bounce-2 2s infinite;
   opacity: 0;
   transition: all 0.2s;
   cursor: pointer;
@@ -471,7 +479,7 @@ body::-webkit-scrollbar {
   right: 0;
   bottom: 0px;
   z-index: 3;
-  animation: bounce-2 2s infinite;
+  animation: bounce 2s infinite;
   transition: all 0.2s;
   cursor: pointer;
   user-select: none;
@@ -598,11 +606,12 @@ body::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.075);
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, .9),
-    rgba(255, 255, 255, .75)
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.75)
   );
   backdrop-filter: blur(10px);
   z-index: 2;
@@ -686,6 +695,36 @@ body::-webkit-scrollbar {
   transition: all 0.35s;
 }
 
+.tags-container {
+  position: absolute;
+  top: 17.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 17.5px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.project-tile-wrapper:hover .tags-container {
+  opacity: 1;
+}
+
+.project-tag {
+  font-family: "Metropolis Regular";
+  display: flex;
+  opacity: 0.95;
+  align-items: center;
+  color: #fff;
+  height: 22.5px;
+  font-size: 0.8em;
+  margin-right: 10px;
+  padding: 4px 12.5px 0 12.5px;
+  border-radius: 22.5px;
+  text-align: center;
+  user-select: none;
+}
+
 .section.portfolio .filter.current {
   color: #ffffff;
   mix-blend-mode: normal;
@@ -708,7 +747,7 @@ body::-webkit-scrollbar {
   gap: 10px;
   grid-template-areas:
     "placeholder project-1 project-3 project-5 project-7 project-9 project-11"
-    "placeholder project-2 project-3 project-6 project-7 project-10 project-11"
+    "placeholder project-1 project-4 project-5 project-8 project-9 project-12"
     "placeholder project-2 project-4 project-6 project-8 project-10 project-12";
   justify-content: start;
   width: auto;
@@ -723,6 +762,51 @@ body::-webkit-scrollbar {
   font-size: 15px;
   opacity: 1;
   transform: translateX(0);
+  padding-left: 17.5px;
+  bottom: 35px;
+  z-index: 3;
+}
+
+.projects-grid .project-label-shadow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1)
+  );
+  transition: opacity 0.2s;
+  z-index: -1;
+}
+
+.project-tile-wrapper:hover .project-label-shadow {
+  opacity: 1;
+}
+
+.project-tile_description:hover {
+  opacity: 1;
+}
+
+.section.portfolio .projects-grid .project-label .project-tile_title {
+  font-size: 1em;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.section.portfolio .projects-grid .project-label .project-tile_description {
+  font-size: 1em;
+  color: #ffffff;
+  font-weight: 300;
+  margin-top: 10px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
 }
 
 .section.portfolio .projects-grid .grid-placeholder {
@@ -732,20 +816,20 @@ body::-webkit-scrollbar {
 }
 
 .section.portfolio .projects-grid .project-tile-wrapper {
-  background-image: url(/assets/imgs/project1-preview.jpg);
   display: flex;
   align-items: center;
   position: relative;
   justify-self: stretch;
   overflow: hidden;
   cursor: pointer;
+  /* animation: fadeIn 0.75s; */
   transform: scale3d(1, 1, 1);
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 .section.portfolio .projects-grid .project-tile-wrapper:hover {
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.3);
-  transform: scale3d(1.02, 1.02, 1.02);
+  /* transform: scale3d(1.02, 1.02, 1.02); */
 }
 
 .section.portfolio .scroll-block {
@@ -790,15 +874,115 @@ body::-webkit-scrollbar {
   position: fixed;
   display: flex;
   justify-content: center;
-  align-items: center;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.25);
+  padding: 70px;
+  backdrop-filter: blur(10px);
   z-index: 5;
+  opacity: 1;
+  animation: fadeIn 0.4s;
+  transition: all 0.2s;
+}
+
+.project-modal .backdrop:hover {
+  opacity: 1;
+}
+
+.project-modal .backdrop {
+  animation: fadeIn 0.4s;
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: -1;
+  transition: opacity 0.2s;
+}
+
+.project-modal .close-button-corner {
+  position: absolute;
+  left: 70px;
+  top: 70px;
+  width: 200px;
+  height: 200px;
   opacity: 0;
-  pointer-events: none;
+  background: rgba(1, 1, 1, 1);
+  background: radial-gradient(
+    farthest-side at 0% 0%,
+    rgba(25, 25, 25, 0.7),
+    rgba(25, 25, 25, 0.5),
+    rgba(25, 25, 25, 0)
+  );
+  transition: opacity .2s;
+}
+.project-modal .close-button-corner:hover{
+  opacity: 1;
+}
+.project-modal .close-button-corner:hover svg{
+  opacity: 1;
+}
+
+.project-modal .close-button-corner svg{
+  fill: #fff;
+  width: 57.5px;
+  height: 57.5px;
+  left: 12.5px;
+  top: 12.5px;
+  padding: 20px;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+  transition: opacity .3s;
+}
+
+.close-button-corner-label {
+  font-family: "Metropolis Light";
+  font-size: 12.5px;
+  position: absolute;
+  top: 35px;
+  left: 70px;
+  user-select: none;
+}
+
+.project-modal .close-button {
+  font-family: "Metropolis Medium";
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  opacity: 0.9;
+  justify-content: center;
+  align-items: center;
+  color: #e54e40;
+  height: 70px;
+  width: auto;
+  position: absolute;
+  bottom: 0;
+  font-size: 1em;
+  margin-right: 10px;
+  text-align: center;
+  user-select: none;
+}
+
+.project-modal .content {
+  width: 100%;
+  height: calc(100%);
+  overflow: scroll;
+  scroll-behavior: smooth;
+  background-color: #d1d3d4;
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.075);
+}
+
+.project-modal .project-document {
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.075);
 }
 
 .section.about-me {

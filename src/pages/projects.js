@@ -3,11 +3,16 @@ import ProjectTile from "../components/ProjectTile";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import ProjectFilterCategory from "../components/ProjectFilterCategory";
-import placeholderImage from "../../public/assets/imgs/project1-preview.jpg";
+import ProjectModal from "@/components/ProjectModal";
 
-function Projects({currentSection, scrollYPosition, windowHeight }) {
+function Projects({
+  currentSection,
+  scrollYPosition,
+  windowHeight,
+  projectView,
+  setProjectView,
+}) {
   const [currentProject, setCurrentProject] = useState(0);
-  const [modalOpen, setModalOpen] = useState(false);
   const projectModalBackdropRef = useRef(null);
   const filterCancelRef = useRef(null);
   const projectGrid = useRef(null);
@@ -16,7 +21,7 @@ function Projects({currentSection, scrollYPosition, windowHeight }) {
 
   const filterPosition = () => {
     switch (currentFilter) {
-      case "website":
+      case "ws":
         return "0";
       case "app":
         return "100%";
@@ -30,8 +35,8 @@ function Projects({currentSection, scrollYPosition, windowHeight }) {
   };
 
   const gridScrollback = () => {
-      projectGrid.current.scrollLeft = 0;
-  }
+    projectGrid.current.scrollLeft = 0;
+  };
   // useEffect(() => {
   //   projectModalBackdropRef.current.addEventListener('click', handleClick);
   //   return () => {
@@ -47,15 +52,14 @@ function Projects({currentSection, scrollYPosition, windowHeight }) {
     //     setModalOpen(true);
     //   });
     // }
+    setProjects(projectData)
     gridScrollback();
     filterCancelRef.current.addEventListener("click", () => {
       setCurrentFilter(null);
+      setProjects(projectData)
     });
     filterCancelRef.current.addEventListener("hover", () => {
       filterCancelRef.current.style.opacity = "1";
-    });
-    projectGrid.current.addEventListener("scroll", () => {
-      console.log(projectGrid.current.scrollLeft);
     });
     return () => {
       filterCancelRef.current.removeEventListener("click", () => {
@@ -67,89 +71,102 @@ function Projects({currentSection, scrollYPosition, windowHeight }) {
   const projectData = [
     {
       id: 0,
-      title: "Project 1",
-      description: "This is the first project",
-      image: "project1-preview",
-      hero: "project1-hero",
-      type: "cs",
+      title: "Co-Care",
+      abb: "cc",
+      description: "This is the second project",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".cs",
+      tags: ["UX", "SaaS", "Lifestyle"],
     },
     {
       id: 1,
-      title: "Project 2",
-      description: "This is the second project",
-      image: "project2-preview",
-      hero: "project2-hero",
-      type: "fs",
+      title: "True Finals Landing Page",
+      abb: "tf",
+      description: "This is the first project",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".ws",
+      tags: ["UX", "SaaS"],
     },
     {
       id: 2,
-      title: "Project 3",
-      description: "This is the third project",
-      image: "project3-preview",
-      hero: "project3-hero",
-      type: "fs",
+      title: "D&D Party Creator",
+      description: "This is the fourth project",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".ws",
+      tags: ["UX", "SWE", "Fun"],
     },
     {
       id: 3,
-      title: "Project 4",
-      description: "This is the fourth project",
-      image: "project4-preview",
-      hero: "project4-hero",
-      type: "fs",
+      title: "PeopleSpheres",
+      abb: "ps",
+      description: "This is the third project",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".app",
+      tags: ["UX", "Interface"],
     },
     {
       id: 4,
-      title: "Project 5",
+      title: "Garmin Watch",
       description: "This is the fifth project",
-      image: "project5-preview",
-      hero: "project5-hero",
-      type: "fs",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".cs",
+      tags: ["", ""],
     },
     {
       id: 5,
-      title: "Project 6",
+      title: "Co-Care",
       description: "This is the sixth project",
-      image: "project6-preview",
-      hero: "project6-hero",
-      type: "cs",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".cs",
+      tags: ["", ""],
     },
     {
       id: 6,
       title: "Project 7",
       description: "This is the seventh project",
-      image: "project7-preview",
-      hero: "project7-hero",
-      type: "fs",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".fs",
+      tags: ["", ""],
     },
     {
       id: 7,
       title: "Project 8",
       description: "This is the eighth project",
-      image: "project8-preview",
-      hero: "project8-hero",
-      type: "fs",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".etc",
+      tags: ["", ""],
     },
     {
       id: 8,
       title: "Project 9",
       description: "This is the ninth project",
-      image: "project9-preview",
-      hero: "project9-hero",
-      type: "fs",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".fs",
+      tags: ["", ""],
     },
     {
       id: 9,
       title: "Project 10",
       description: "This is the tenth project",
-      image: "project10-preview",
-      hero: "project10-hero",
-      type: "fs",
+      image: "preview.jpg",
+      hero: "hero.jpg",
+      type: ".fs",
+      tags: ["", ""],
     },
   ];
   const projectFilters = [
     {
       id: 1,
-      name: "website",
+      name: "ws",
       text: "Websites",
     },
     {
@@ -165,20 +182,26 @@ function Projects({currentSection, scrollYPosition, windowHeight }) {
     {
       id: 4,
       name: "etc",
-      text: "...",
+      text: "Etc.",
     },
   ];
 
-  const projects = projectData.map((project) => {
+  const projects = renderedProjects.map((project) => {
     return (
       <ProjectTile
         key={project.id}
-        sequence={project.id}
+        sequence={renderedProjects.indexOf(project)}
         project={project}
         currentProject={currentProject}
+        projectData={projectData}
         setCurrentProject={setCurrentProject}
+        setProjects={setProjects}
+        projectView={projectView}
+        setProjectView={setProjectView}
+        renderedProjects={renderedProjects}
         scrollYPosition={scrollYPosition}
         windowHeight={windowHeight}
+        projectModalBackdropRef={projectModalBackdropRef}
       />
     );
   });
@@ -191,31 +214,26 @@ function Projects({currentSection, scrollYPosition, windowHeight }) {
         text={filter.text}
         currentFilter={currentFilter}
         setCurrentFilter={setCurrentFilter}
+        setProjects={setProjects}
+        renderedProjects={renderedProjects}
+        projectData={projectData}
       />
     );
   });
 
   return (
     <>
-      <div className={modalOpen ? "project-modal visible" : "project-modal"}>
-        <div className="content">
-          <div className="project-document">
-            <Image
-              src={placeholderImage}
-              alt={projectData[currentProject].title}
-              width={800}
-              height={600}
-              placeholder="blur"
-              style={{
-                width: "100%",
-                height: "auto",
-              }}
-            />
-          </div>
-        </div>
-        <div ref={projectModalBackdropRef} className="backdrop"></div>
-        <div className="content"></div>
-      </div>
+      {!projectView ? (
+        <></>
+      ) : (<ProjectModal
+        projectModalBackdropRef={projectModalBackdropRef}
+        projectData={projectData}
+        currentProject={currentProject}
+        projectView={projectView}
+        setProjectView={setProjectView}
+        project={projectData[currentProject]}
+      />
+      )}
       <div id="projects" className="section portfolio">
         <div className="project-header">
           <div className="title">
